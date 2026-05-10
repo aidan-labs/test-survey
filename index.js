@@ -45,22 +45,6 @@ const aiHarmsTaxonomy = [
   "Environmental",
 ];
 
-// https://arxiv.org/abs/2001.01818
-// "After collecting all the papers, we then came up with initial sets of 20 keywords or phrases for each of the eight following domains: agriculture, education, environmental sustainability, healthcare, combating information manipulation, social care and urban planning, public safety, and transportation"
-
-// https://doi.org/10.1016/j.techsoc.2026.103331
-// they reviwed 170 papers and checked if a predefined benefit was present
-// "AI benefits (RQ3) were coded as present if the study discussed concrete advantages of GAI. These included efficacy improvements (e.g., enhanced task performance or accuracy), decision-making support (e.g., data-informed insights), automation (e.g., AI replacing manual tasks), personalization (e.g., tailoring services to user needs), or other innovative outcomes (e.g., collaborative improvements or environmental contributions).'"
-
-// https://doi.org/10.1016/j.procs.2026.03.172
-// "Table 1 summarises the main benefits of integrating AI in PM, highlighting the supporting literature."
-
-// https://doi.org/10.24251/HICSS.2022.723
-// "Hence, when identifying the potential benefit(s), it is important to examine only the direct and not the indirect benefit(s), as otherwise the quality of this dimension is diluted. The dimension’s characteristics are thus the following: “Cost Performance”, “Quality Performance”, “Revenue Performance”, and “Risk and Compliance Performance”."
-
-// TODO
-const aiBenefitsTaxonomy = [""];
-
 // trust and distrust methods (sort of)
 // https://arxiv.org/pdf/2403.00582
 // used prolific
@@ -105,7 +89,7 @@ const surveyJson = {
       elements: [
         {
           type: "radiogroup",
-          name: "question1",
+          name: "aiFamiliarityQuestion",
           title:
             "How familiar are you with AI tools such as ChatGPT, Claude, Gemini, Copilot, or similar tools?",
           isRequired: true,
@@ -138,7 +122,7 @@ const surveyJson = {
         },
         {
           type: "radiogroup",
-          name: "question2",
+          name: "aiUsageFrequencyQuestion",
           title:
             "In the last month, how often have you used AI tools such as ChatGPT, Claude, Gemini, Copilot, or similar tools for personal use?",
           isRequired: true,
@@ -167,7 +151,7 @@ const surveyJson = {
         },
         {
           type: "rating",
-          name: "question3",
+          name: "aiTrustQuestion",
           title:
             "How much do you trust AI tools such as ChatGPT, Claude, Gemini, Copilot, or similar tools?",
           isRequired: true,
@@ -178,7 +162,7 @@ const surveyJson = {
         },
         {
           type: "rating",
-          name: "question4",
+          name: "aiDistrustQuestion",
           title:
             "How much do you distrust AI tools such as ChatGPT, Claude, Gemini, Copilot, or similar tools?",
           isRequired: true,
@@ -195,11 +179,11 @@ const surveyJson = {
       elements: [
         {
           type: "matrixdynamic",
-          name: "question5",
+          name: "listUseCasesQuestion",
           title:
             "Identify your current use-cases of AI and list the ways you use AI tools.",
           description:
-            'Add one use case per entry. Use the "Add another use case" button below.',
+            'Add one use case at a time using the "Add another use case" button.',
           isRequired: true,
           columns: [
             {
@@ -219,7 +203,7 @@ const surveyJson = {
       elements: [
         {
           type: "matrixdynamic",
-          name: "question6",
+          name: "useCaseCategoriesQuestion",
           title:
             "For each use case identified, select all of the categories that best describe it.",
           isRequired: true,
@@ -247,7 +231,7 @@ const surveyJson = {
       elements: [
         {
           type: "radiogroup",
-          name: "question7",
+          name: "existingRulesQuestion",
           title:
             "Do you currently follow any personal rules when using AI tools?",
           isRequired: true,
@@ -268,8 +252,8 @@ const surveyJson = {
         },
         {
           type: "matrixdynamic",
-          name: "question8",
-          visibleIf: "{question7} = 'Item 1'",
+          name: "existingRulesForUseCaseQuestion",
+          visibleIf: "{existingRulesQuestion} = 'Item 1'",
           title:
             "For each use case, write any rule or policy you already follow.",
           description:
@@ -291,8 +275,8 @@ const surveyJson = {
         },
         {
           type: "comment",
-          name: "question9",
-          visibleIf: "{question7} = 'Item 1'",
+          name: "otherExistingRulesQuestion",
+          visibleIf: "{existingRulesQuestion} = 'Item 1'",
           title:
             "Do you have any other AI-use rules that are not tied to a specific use case?",
         },
@@ -300,49 +284,52 @@ const surveyJson = {
     },
     {
       name: "page5",
-      title: "Benefits and Harms",
+      title: "Identify Perceived Harms",
       elements: [
         {
-          type: "matrixdynamic",
-          name: "question10",
-          title: "For each use case, identify any benefits or harms you see.",
-          description:
-            "Use commas to list multiple benefits or harms per use case.",
-          isRequired: true,
-          columns: [
+          type: "paneldynamic",
+          name: "useCaseHarmsQuestion",
+          title: "For each use case, identify any harms you see.",
+          description: 'Add one harm at a time using the "Add harm" button.',
+          templateElements: [
             {
+              type: "text",
               name: "Use case",
-              title: "Use case",
-              cellType: "text",
+              title: "Use Case",
               readOnly: true,
             },
             {
-              name: "Benefits",
-              title: "Benefits",
-              cellType: "comment",
-              isRequired: true,
-            },
-            {
-              name: "Harms",
+              type: "matrixdynamic",
+              name: "allHarmsIdentified",
               title: "Harms",
-              cellType: "comment",
+              columns: [
+                {
+                  name: "harm",
+                  title: "Harm",
+                  cellType: "text",
+                  isRequired: true,
+                },
+              ],
               isRequired: true,
+              rowCount: 1,
+              addRowText: "Add another harm",
             },
           ],
-          allowAddRows: false,
-          allowRemoveRows: false,
+          panelCount: 1,
+          allowAddPanel: false,
+          allowRemovePanel: false,
         },
       ],
     },
     {
       name: "page6",
-      title: "Categorize Benefits and Harms ",
+      title: "Categorize Perceived Harms ",
       elements: [
         {
           type: "matrixdynamic",
-          name: "question11",
+          name: "harmCategoriesQuestion",
           title:
-            "For each benefit and harm identified, select all of the categories that best describe the perceived or potential benefit and harm.",
+            "For each harm identified, select all categories that best describe the perceived or potential harm.",
           isRequired: true,
           columns: [
             {
@@ -351,25 +338,13 @@ const surveyJson = {
               readOnly: true,
             },
             {
-              name: "Benefits",
-              title: "Benefits",
-              cellType: "text",
-              readOnly: true,
-            },
-            {
-              name: "Benefit category",
-              title: "Benefit category",
-              choices: [1, 2, 3, 4, 5],
-              isRequired: true,
-            },
-            {
-              name: "Harms",
+              name: "allHarmsAsCsv",
               title: "Harms",
               cellType: "text",
               readOnly: true,
             },
             {
-              name: "Harm category",
+              name: "harmCategories",
               title: "Harm category",
               cellType: "tagbox",
               choices: aiHarmsTaxonomy,
@@ -387,9 +362,9 @@ const surveyJson = {
       elements: [
         {
           type: "matrixdynamic",
-          name: "question12",
+          name: "personalPolicyRulesQuestion",
           title:
-            "Use the benefits and harms you identified to help create a rule for each use case and explain your reason.",
+            "Based on the harms you identified, create a rule for each use case and explain your reason.",
           isRequired: true,
           columns: [
             {
@@ -398,25 +373,19 @@ const surveyJson = {
               readOnly: true,
             },
             {
-              name: "Benefits",
-              title: "Benefits",
-              cellType: "text",
-              readOnly: true,
-            },
-            {
-              name: "Harms",
+              name: "allHarmsAsCsv",
               title: "Harms",
               cellType: "text",
               readOnly: true,
             },
             {
-              name: "Rule",
+              name: "rule",
               title: "Rule",
               cellType: "comment",
               isRequired: true,
             },
             {
-              name: "Rule reason",
+              name: "ruleReason",
               title: "Reason",
               cellType: "comment",
               isRequired: true,
@@ -433,7 +402,7 @@ const surveyJson = {
       elements: [
         {
           type: "matrixdynamic",
-          name: "question13",
+          name: "ruleFollowStrategiesQuestion",
           title:
             "For each rule identified, determine how easy it will be to follow and any strategies you will use to follow the rule.",
           isRequired: true,
@@ -444,25 +413,19 @@ const surveyJson = {
               readOnly: true,
             },
             {
-              name: "Benefits",
-              title: "Benefits",
-              cellType: "text",
-              readOnly: true,
-            },
-            {
-              name: "Harms",
+              name: "allHarmsAsCsv",
               title: "Harms",
               cellType: "text",
               readOnly: true,
             },
             {
-              name: "Rule",
+              name: "rule",
               title: "Rule",
               cellType: "comment",
               readOnly: true,
             },
             {
-              name: "Follow difficulty",
+              name: "ruleFollowDifficulty",
               title: "How easy will the rule be to follow?",
               cellType: "dropdown",
               isRequired: true,
@@ -483,7 +446,7 @@ const surveyJson = {
               storeOthersAsComment: true,
             },
             {
-              name: "Follow strategy",
+              name: "ruleFollowStrategy",
               title: "Strategy to follow the rule",
               cellType: "comment",
               isRequired: true,
@@ -500,7 +463,7 @@ const surveyJson = {
       elements: [
         {
           type: "ranking",
-          name: "question14",
+          name: "hardestPartsOfSurveyRankingQuestion",
           title: "What was the hardest part of this survey?",
           description:
             "Drag and drop to rank from hardest (top) to easiest (bottom).",
@@ -516,11 +479,11 @@ const surveyJson = {
             },
             {
               value: "Item 3",
-              text: "Identifying benefits of your AI use cases",
+              text: "Identifying harms of your AI use cases",
             },
             {
               value: "Item 4",
-              text: "Identifying harms of your AI use cases",
+              text: "Categorizing the perceived harms of your AI use cases",
             },
             {
               value: "Item 5",
@@ -539,7 +502,7 @@ const surveyJson = {
         },
         {
           type: "rating",
-          name: "question15",
+          name: "ruleCreationDifficultyQuestion",
           title:
             "How difficult was it to create personal rules for each of your AI use cases?",
           isRequired: true,
@@ -548,16 +511,15 @@ const surveyJson = {
         },
         {
           type: "rating",
-          name: "question16",
-          title:
-            "How difficult was it to identify benefits and harms of your AI use cases?",
+          name: "harmIdentificationDifficultyQuestion",
+          title: "How difficult was it to identify harms of your AI use cases?",
           isRequired: true,
           minRateDescription: "very easy",
           maxRateDescription: "very difficult",
         },
         {
           type: "rating",
-          name: "question17",
+          name: "processUsefulnessQuestion",
           title:
             "How useful was this process for thinking about your own AI use?",
           isRequired: true,
@@ -566,7 +528,7 @@ const surveyJson = {
         },
         {
           type: "comment",
-          name: "question18",
+          name: "processOverallReflectionQuestion",
           title:
             "What, if anything, did this process make you think about differently?",
           isRequired: true,
@@ -575,7 +537,7 @@ const surveyJson = {
         },
         {
           type: "comment",
-          name: "question19",
+          name: "hardestPartOfSurveyExplanationQuestion",
           title:
             "Briefly explain what made the hardest part of this process the most difficult.",
           isRequired: true,
@@ -584,7 +546,7 @@ const surveyJson = {
         },
         {
           type: "radiogroup",
-          name: "question20",
+          name: "surveyResponseQualityQuestion",
           title: "Should we use your responses in our analysis?",
           isRequired: true,
           choices: [
@@ -610,7 +572,7 @@ const surveyJson = {
   progressBarLocation: "aboveheader",
   allowResizeComment: false,
   showTimer: true,
-  showTimerPanel: "none",
+  timerLocation: "bottom",
   headerView: "advanced",
 };
 
@@ -624,112 +586,129 @@ survey.setValue("SESSION_ID", SESSION_ID);
 
 survey.onValueChanged.add((survey, { name, question, value }) => {
   // Copy use cases to future questions
-  if (name == "question5") {
-    const userUseCases = [];
+  if (name == "listUseCasesQuestion") {
+    const userUseCasesIdentified = [];
 
     if (value) {
       value.forEach((entry) => {
         const useCase = entry["Use case"];
 
-        if (useCase && useCase.trim() !== "") {
-          userUseCases.push({
+        if (useCase) {
+          userUseCasesIdentified.push({
             "Use case": useCase,
           });
         }
       });
     }
 
-    survey.setValue("question6", userUseCases);
-    survey.setValue("question8", userUseCases);
-    survey.setValue("question10", userUseCases);
-    survey.setValue("question11", userUseCases);
-    survey.setValue("question12", userUseCases);
-    survey.setValue("question13", userUseCases);
+    survey.setValue("useCaseCategoriesQuestion", userUseCasesIdentified);
+    survey.setValue("existingRulesForUseCaseQuestion", userUseCasesIdentified);
+    survey.setValue("useCaseHarmsQuestion", userUseCasesIdentified);
+    survey.setValue("harmCategoriesQuestion", userUseCasesIdentified);
+    survey.setValue("personalPolicyRulesQuestion", userUseCasesIdentified);
+    survey.setValue("ruleFollowStrategiesQuestion", userUseCasesIdentified);
   }
 
-  // Copy benefits and harms to future questions
-  if (name == "question10") {
-    const userBenefitsAndHarms = [];
+  // Copy harms to future questions
+  if (name == "useCaseHarmsQuestion") {
+    const allHarmsIdentifiedData = [];
 
     if (value) {
       value.forEach((entry) => {
-        const benefit = entry["Benefits"];
-        const harm = entry["Harms"];
-
-        if (benefit || harm) {
-          let rule = "";
-          const question8Data = survey.getValue("question8");
-
-          if (question8Data) {
-            question8Data.forEach((existingRule) => {
-              if (existingRule["Use case"] == entry["Use case"]) {
-                rule = existingRule["Existing rule"];
-              }
-            });
-          }
-
-          userBenefitsAndHarms.push({
-            "Use case": entry["Use case"],
-            Benefits: benefit,
-            Harms: harm,
-            Rule: rule,
-          });
-        }
-      });
-    }
-
-    survey.setValue("question11", userBenefitsAndHarms);
-    survey.setValue("question12", userBenefitsAndHarms);
-    survey.setValue("question13", userBenefitsAndHarms);
-  }
-
-  // Copy existing rules to future questions
-  if (name == "question8") {
-    const question12Data = survey.getValue("question12");
-    const existingRules = [];
-
-    if (question12Data) {
-      question12Data.forEach((entry) => {
         const useCase = entry["Use case"];
-        let rule = "";
 
-        if (value) {
-          value.forEach((ruleEntry) => {
-            if (ruleEntry["Use case"] == useCase) {
-              rule = ruleEntry["Existing rule"];
+        let allHarmsAsCsv = "";
+
+        const harms = [];
+
+        if (entry.allHarmsIdentified) {
+          entry.allHarmsIdentified.forEach((harmEntry) => {
+            const harm = harmEntry.harm;
+
+            if (harm) {
+              harms.push(harm);
             }
           });
         }
 
-        existingRules.push({
+        allHarmsAsCsv = harms.join(", ");
+
+        let existingRule = "";
+
+        const existingRulesData = survey.getValue(
+          "existingRulesForUseCaseQuestion",
+        );
+
+        if (existingRulesData) {
+          existingRulesData.forEach((ruleEntry) => {
+            if (ruleEntry["Use case"] == useCase) {
+              existingRule = ruleEntry["Existing rule"];
+            }
+          });
+        }
+
+        allHarmsIdentifiedData.push({
           "Use case": useCase,
-          Benefits: entry["Benefits"],
-          Harms: entry["Harms"],
-          Rule: rule,
-          "Rule reason": entry["Rule reason"],
+          allHarmsAsCsv: allHarmsAsCsv,
+          rule: existingRule,
         });
       });
     }
 
-    survey.setValue("question12", existingRules);
+    survey.setValue("harmCategoriesQuestion", allHarmsIdentifiedData);
+    survey.setValue("personalPolicyRulesQuestion", allHarmsIdentifiedData);
+    survey.setValue("ruleFollowStrategiesQuestion", allHarmsIdentifiedData);
+  }
+
+  // Copy existing rules to future questions
+  if (name == "existingRulesForUseCaseQuestion") {
+    const personalPolicyRulesData = survey.getValue(
+      "personalPolicyRulesQuestion",
+    );
+
+    const updatedRules = [];
+
+    if (personalPolicyRulesData) {
+      personalPolicyRulesData.forEach((entry) => {
+        const useCase = entry["Use case"];
+
+        let existingRule = "";
+
+        if (value) {
+          value.forEach((ruleEntry) => {
+            if (ruleEntry["Use case"] == useCase) {
+              existingRule = ruleEntry["Existing rule"];
+            }
+          });
+        }
+
+        updatedRules.push({
+          "Use case": useCase,
+          allHarmsAsCsv: entry.allHarmsAsCsv,
+          rule: existingRule,
+          ruleReason: entry.ruleReason,
+        });
+      });
+    }
+
+    survey.setValue("personalPolicyRulesQuestion", updatedRules);
   }
 
   // Copy final rules to future questions
-  if (name == "question12") {
+  if (name == "personalPolicyRulesQuestion") {
     const finalRules = [];
 
     if (value) {
       value.forEach((entry) => {
         finalRules.push({
           "Use case": entry["Use case"],
-          Benefits: entry["Benefits"],
-          Harms: entry["Harms"],
-          Rule: entry["Rule"],
+          allHarmsAsCsv: entry.allHarmsAsCsv,
+          rule: entry.rule,
         });
       });
     }
 
-    survey.setValue("question13", finalRules);
+    survey.setValue("ruleFollowStrategiesQuestion", finalRules);
   }
 });
 
@@ -741,6 +720,7 @@ function alertResults(sender) {
   });
 
   const results = JSON.stringify(sender.data);
+  console.log(results);
   alert(results);
   // saveSurveyResults(
   //     "https://your-web-service.com/" + SURVEY_ID,
