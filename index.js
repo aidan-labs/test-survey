@@ -338,8 +338,8 @@ const surveyJson = {
               readOnly: true,
             },
             {
-              name: "allHarmsAsCsv",
-              title: "Harms",
+              name: "harm",
+              title: "Harm",
               cellType: "text",
               readOnly: true,
             },
@@ -611,13 +611,13 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
 
   // Copy harms to future questions
   if (name == "useCaseHarmsQuestion") {
-    const allHarmsIdentifiedData = [];
+    const harmCategoryRows = [];
+
+    const useCaseData = [];
 
     if (value) {
       value.forEach((entry) => {
         const useCase = entry["Use case"];
-
-        let allHarmsAsCsv = "";
 
         const harms = [];
 
@@ -627,6 +627,11 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
 
             if (harm) {
               harms.push(harm);
+
+              harmCategoryRows.push({
+                "Use case": useCase,
+                harm: harm,
+              });
             }
           });
         }
@@ -647,7 +652,7 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
           });
         }
 
-        allHarmsIdentifiedData.push({
+        useCaseData.push({
           "Use case": useCase,
           allHarmsAsCsv: allHarmsAsCsv,
           rule: existingRule,
@@ -655,9 +660,9 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
       });
     }
 
-    survey.setValue("harmCategoriesQuestion", allHarmsIdentifiedData);
-    survey.setValue("personalPolicyRulesQuestion", allHarmsIdentifiedData);
-    survey.setValue("ruleFollowStrategiesQuestion", allHarmsIdentifiedData);
+    survey.setValue("harmCategoriesQuestion", harmCategoryRows);
+    survey.setValue("personalPolicyRulesQuestion", useCaseData);
+    survey.setValue("ruleFollowStrategiesQuestion", useCaseData);
   }
 
   // Copy existing rules to future questions
