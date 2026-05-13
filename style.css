@@ -1,0 +1,5 @@
+/* hides the timer */
+/* found the ID by inspecting it */
+.sd-timer {
+  display: none;
+}

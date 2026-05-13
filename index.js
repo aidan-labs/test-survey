@@ -192,7 +192,9 @@ const surveyJson = {
               isRequired: true,
             },
           ],
-          rowCount: 1,
+          minRowCount: 2,
+          maxRowCount: 8,
+          rowCount: 2,
           addRowText: "Add another use case",
         },
       ],
@@ -309,8 +311,16 @@ const surveyJson = {
                   cellType: "text",
                   isRequired: true,
                 },
+                {
+                  name: "harmCategories",
+                  title: "Harm category",
+                  cellType: "tagbox",
+                  choices: aiHarmsTaxonomy,
+                  isRequired: true,
+                },
               ],
               isRequired: true,
+              minRowCount: 1,
               rowCount: 1,
               addRowText: "Add another harm",
             },
@@ -323,41 +333,6 @@ const surveyJson = {
     },
     {
       name: "page6",
-      title: "Categorize Perceived Harms ",
-      elements: [
-        {
-          type: "matrixdynamic",
-          name: "harmCategoriesQuestion",
-          title:
-            "For each harm identified, select all categories that best describe the perceived or potential harm.",
-          isRequired: true,
-          columns: [
-            {
-              name: "Use case",
-              cellType: "text",
-              readOnly: true,
-            },
-            {
-              name: "harm",
-              title: "Harm",
-              cellType: "text",
-              readOnly: true,
-            },
-            {
-              name: "harmCategories",
-              title: "Harm category",
-              cellType: "tagbox",
-              choices: aiHarmsTaxonomy,
-              isRequired: true,
-            },
-          ],
-          allowAddRows: false,
-          allowRemoveRows: false,
-        },
-      ],
-    },
-    {
-      name: "page7",
       title: "Create Your Personal AI Use Policy",
       elements: [
         {
@@ -375,7 +350,7 @@ const surveyJson = {
             {
               name: "allHarmsAsCsv",
               title: "Harms",
-              cellType: "text",
+              cellType: "comment",
               readOnly: true,
             },
             {
@@ -397,7 +372,7 @@ const surveyJson = {
       ],
     },
     {
-      name: "page8",
+      name: "page7",
       title: "Following Your Rules",
       elements: [
         {
@@ -415,7 +390,7 @@ const surveyJson = {
             {
               name: "allHarmsAsCsv",
               title: "Harms",
-              cellType: "text",
+              cellType: "comment",
               readOnly: true,
             },
             {
@@ -458,7 +433,7 @@ const surveyJson = {
       ],
     },
     {
-      name: "page9",
+      name: "page8",
       title: "Process Reflection",
       elements: [
         {
@@ -604,15 +579,12 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
     survey.setValue("useCaseCategoriesQuestion", userUseCasesIdentified);
     survey.setValue("existingRulesForUseCaseQuestion", userUseCasesIdentified);
     survey.setValue("useCaseHarmsQuestion", userUseCasesIdentified);
-    survey.setValue("harmCategoriesQuestion", userUseCasesIdentified);
     survey.setValue("personalPolicyRulesQuestion", userUseCasesIdentified);
     survey.setValue("ruleFollowStrategiesQuestion", userUseCasesIdentified);
   }
 
   // Copy harms to future questions
   if (name == "useCaseHarmsQuestion") {
-    const harmCategoryRows = [];
-
     const useCaseData = [];
 
     if (value) {
@@ -627,16 +599,11 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
 
             if (harm) {
               harms.push(harm);
-
-              harmCategoryRows.push({
-                "Use case": useCase,
-                harm: harm,
-              });
             }
           });
         }
 
-        allHarmsAsCsv = harms.join(", ");
+        const allHarmsAsCsv = harms.join(", ");
 
         let existingRule = "";
 
@@ -660,7 +627,6 @@ survey.onValueChanged.add((survey, { name, question, value }) => {
       });
     }
 
-    survey.setValue("harmCategoriesQuestion", harmCategoryRows);
     survey.setValue("personalPolicyRulesQuestion", useCaseData);
     survey.setValue("ruleFollowStrategiesQuestion", useCaseData);
   }
