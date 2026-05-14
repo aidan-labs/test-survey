@@ -34,14 +34,19 @@ const nistAIUseTaxonomy = [
 
 // TODO
 const aiHarmsTaxonomy = [
-  "Autonomy",
-  "Physical",
-  "Psychological",
-  "Reputational",
-  "Financial and Business",
-  "Human Rights and Civil Liberties",
-  "Societal and Cultural",
-  "Political and Economic",
+  "Autonomy/agency loss",
+  "Addiction",
+  "Alienation/isolation",
+  "Anxiety/depression",
+  "Coercion/manipulation",
+  "Over-reliance",
+  "Loss of confidence/trust",
+  "Confidentiality loss",
+  "Radicalisation",
+  "Privacy loss",
+  "Breach of ethics/values/norms",
+  "Cheating/plagiarism",
+  "Loss of creativity/critical thinking",
   "Environmental",
 ];
 
@@ -183,7 +188,7 @@ const surveyJson = {
           title:
             "Identify your current use-cases of AI and list the ways you use AI tools.",
           description:
-            'Add one use case at a time using the "Add another use case" button.',
+            'A "use case" is a specific task or activity you use AI for. It is more specific. For example, instead of listing "school," you would described the specific task, such as "Help with math homework." Add one use case at a time using the "Add another use case" button.',
           isRequired: true,
           columns: [
             {
@@ -257,9 +262,9 @@ const surveyJson = {
           name: "existingRulesForUseCaseQuestion",
           visibleIf: "{existingRulesQuestion} = 'Item 1'",
           title:
-            "For each use case, write any rule or policy you already follow.",
+            "For each use case, describe any rule, guidline, or policy you already follow when using AI.",
           description:
-            "Blank responses for use cases you don't have a rule for are okay.",
+            "An existing rule could be habit or reminder you have in place for yourself when using AI. It could be things you avoid doing or things you check before relying on AI. Blank responses for use cases you don't have a rule for are okay.",
           isRequired: true,
           columns: [
             {
@@ -291,8 +296,9 @@ const surveyJson = {
         {
           type: "paneldynamic",
           name: "useCaseHarmsQuestion",
-          title: "For each use case, identify any harms you see.",
-          description: 'Add one harm at a time using the "Add harm" button.',
+          title: "For each use case, identify possible harms you see.",
+          description:
+            'A harm could be a possible risk or negative consequence related to that use of AI. For example, for "Help with math homework" a possible harm could be "Reducing critical thinking." Add one harm at a time using the "Add harm" button.',
           templateElements: [
             {
               type: "text",
@@ -340,6 +346,8 @@ const surveyJson = {
           name: "personalPolicyRulesQuestion",
           title:
             "Based on the harms you identified, create a rule for each use case and explain your reason.",
+          description:
+            'A rule could be a habit, limit, reminder, something you check, avoid, etc., you follow when or before using AI for a specific use case. For example, for "Help with math homework," a rule could be "I will try problems by myself first and ask my professor before using AI. For the reason, please explain why you chose the rule and how you might see it address the harms you previously identified.',
           isRequired: true,
           columns: [
             {
@@ -380,6 +388,8 @@ const surveyJson = {
           name: "ruleFollowStrategiesQuestion",
           title:
             "For each rule identified, determine how easy it will be to follow and any strategies you will use to follow the rule.",
+          description:
+            "For strategy, describe what you might do to manage, remember, or enforce the rule.",
           isRequired: true,
           columns: [
             {
@@ -515,6 +525,8 @@ const surveyJson = {
           name: "hardestPartOfSurveyExplanationQuestion",
           title:
             "Briefly explain what made the hardest part of this process the most difficult.",
+          description:
+            "You can use this space to describe any uncertainty, confusion, difficulty thinking of examples, categorizing, or anything else during this survey.",
           isRequired: true,
           autoGrow: false,
           allowResize: false,
