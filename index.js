@@ -489,7 +489,7 @@ const surveyJson = {
           title:
             "Based on the harms you identified, create a rule for each use case and explain your reason.",
           description:
-            'A rule could be a habit, limit, reminder, something you check, avoid, etc., you follow when or before using AI for a specific use case. For example, for "Help with math homework," a rule could be "I will try problems by myself first and ask my professor before using AI. For the reason, please explain why you chose the rule and how you might see it address the harms you previously identified.',
+            'A rule could be a habit, limit, reminder, something you check, avoid, etc., you follow when or before using AI for a specific use case. For example, for "Help with math homework," a rule could be "I will try problems by myself first and ask my professor before using AI." For the reason, please explain why you chose the rule and how you might see it address the harms you previously identified.',
           isRequired: true,
           columns: [
             {
