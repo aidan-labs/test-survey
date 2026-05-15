@@ -11,22 +11,70 @@ const SESSION_ID = urlParams.get("SESSION_ID");
 // https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=956852
 // "a human-AI task can be considered as a combination of one or more activities"
 const nistAIUseTaxonomy = [
-  "Content creation",
-  "Content synthesis",
-  "Decision making",
-  "Detection",
-  "Digital assistance",
-  "Discovery",
-  "Image analysis",
-  "Information retrieval/search",
-  "Monitoring",
-  "Performance improvement",
-  "Personalization",
-  "Prediction",
-  "Process automation",
-  "Recommendation",
-  "Robotic automation",
-  "Vehicular automation",
+  {
+    value: "Content creation",
+    text: "Content creation||The AI system assists by generating new artifacts such as video, narrative, software code, synthetic data.",
+  },
+  {
+    value: "Content synthesis",
+    text: "Content synthesis||The AI system assists by combining and/or summarizing parts, elements, or concepts into a coherent whole.",
+  },
+  {
+    value: "Decision making",
+    text: "Decision making||The AI system assists by selecting a course of action from among possible alternatives in order to arrive at a solution.",
+  },
+  {
+    value: "Detection",
+    text: "Detection||The AI system assists by identifying, by careful search, examination, or probing, the existence or presence of [something].",
+  },
+  {
+    value: "Digital assistance",
+    text: "Digital assistance||The AI system assists by acting as a personal agent for understanding and responding to commands and questions, and carrying out requested tasks in a conversational manner.",
+  },
+  {
+    value: "Discovery",
+    text: "Discovery||The AI system assists by finding, recognizing, or unearthing something for the first time.",
+  },
+  {
+    value: "Image analysis",
+    text: "Image analysis||The AI system assists by recognizing attributes within digital images to extract meaningful information.",
+  },
+  {
+    value: "Information retrieval/search",
+    text: "Information retrieval/search||The AI system assists by finding information about specific topics of interest.",
+  },
+  {
+    value: "Monitoring",
+    text: "Monitoring||The AI system assists by observing, checking, and watching over the process, quality, or state of [something] over time to gain insights into how [something] is behaving or performing.",
+  },
+  {
+    value: "Performance improvement",
+    text: "Performance improvement||The AI system assists by improving quality and efficiency of the intended outcomes.",
+  },
+  {
+    value: "Personalization",
+    text: "Personalization||The AI system assists by designing and tailoring [something] to meet an individual's characteristics, preferences, or behaviors.",
+  },
+  {
+    value: "Prediction",
+    text: "Prediction||The AI system assists by forecasting the likelihood of a future outcome.",
+  },
+  {
+    value: "Process automation",
+    text: "Process automation||The AI system assists by performing repetitive tasks, removing bottlenecks, reducing errors and loss of data, and increasing efficiency of a process.",
+  },
+  {
+    value: "Recommendation",
+    text: "Recommendation||The AI system assists by suggesting or proposing a manageable set of viable options to aid decision-making.",
+  },
+  {
+    value: "Robotic automation",
+    text: "Robotic automation||The AI system assists by using physical machines to automate, improve, and/or optimize a variety of tasks.",
+  },
+  {
+    value: "Vehicular automation",
+    text: "Vehicular automation||The AI system assists by automating physical transportation of goods, instrumentation and/or people.",
+  },
 ];
 
 // https://arxiv.org/pdf/2407.01294
@@ -34,20 +82,112 @@ const nistAIUseTaxonomy = [
 
 // TODO
 const aiHarmsTaxonomy = [
-  "Autonomy/agency loss",
-  "Addiction",
-  "Alienation/isolation",
-  "Anxiety/depression",
-  "Coercion/manipulation",
-  "Over-reliance",
-  "Loss of confidence/trust",
-  "Confidentiality loss",
-  "Radicalisation",
-  "Privacy loss",
-  "Breach of ethics/values/norms",
-  "Cheating/plagiarism",
-  "Loss of creativity/critical thinking",
-  "Environmental",
+  {
+    value: "Autonomy/agency loss",
+    text: "Autonomy/agency loss||Loss of an individual, group or organisation’s ability to make informed decisions or pursue goals.",
+  },
+  {
+    value: "Addiction",
+    text: "Addiction||Emotional or material dependence on technology or a technology system.",
+  },
+  {
+    value: "Alienation/isolation",
+    text: "Alienation/isolation||An individual’s or group’s feeling of lack of connection with those around as a result of technology use or misuse.",
+  },
+  {
+    value: "Anxiety/depression",
+    text: "Anxiety/depression||Mental health decline due to addiction, negative social interactions such as humiliation and shaming and traumatic distressing events such as online violence or rape.",
+  },
+  {
+    value: "Coercion/manipulation",
+    text: "Coercion/manipulation||Use of a technology system to covertly alter user beliefs and behaviour using nudging, dark patterns and/or other opaque techniques, resulting in potential erosion of privacy, addiction, anxiety/distress, etc.",
+  },
+  {
+    value: "Over-reliance",
+    text: "Over-reliance||Unfettered and/or obsessive belief in the accuracy or other quality of a technology system, resulting in addiction, anxiety, introversion, sentience, complacency, lack of critical thinking and other actual or potential negative impacts.",
+  },
+  {
+    value: "Loss of confidence/trust",
+    text: "Loss of confidence/trust||Misleading or unfair change(s) in how an individual, group, or organisation is viewed, leading to loss of ability to conduct relationships, raise capital, recruit people, etc.",
+  },
+  {
+    value: "Confidentiality loss",
+    text: "Confidentiality loss||Unauthorised sharing of sensitive, confidential information and documents such as corporate strategy and financial plans with third-parties.",
+  },
+  {
+    value: "Radicalisation",
+    text: "Radicalisation||Adoption of extreme political, social, or religious ideals and aspirations due to the nature or misuse of an algorithmic system, potentially resulting in abuse, violence, or terrorism.",
+  },
+  {
+    value: "Privacy loss",
+    text: "Privacy loss||Unwarranted exposure of an individual’s private life or personal data through cyberattacks, doxxing, etc.",
+  },
+  {
+    value: "Breach of ethics/values/norms",
+    text: "Breach of ethics/values/norms||An actual or perceived violation or deviation from the established societal values, norms or ethical standards or principles.",
+  },
+  {
+    value: "Cheating/plagiarism",
+    text: "Cheating/plagiarism||Use of another person’s or group’s words or ideas without consent and/or acknowledgement.",
+  },
+  {
+    value: "Loss of creativity/critical thinking",
+    text: "Loss of creativity/critical thinking||Devaluation and/or deterioration of human creativity, artistic expression, imagination, critical thinking or problem-solving skills.",
+  },
+  // made a definition based on items in the section
+  {
+    value: "Environmental",
+    text: "Environmental||Negative environmental impacts of a technology system, including effects on climate, ecosystems, and natural resources such as carbon emissions, energy and water consumption, pollution, waste, and biodiversity loss.",
+  },
+  // should the definition be changed from original?
+  {
+    value: "IP/copyright loss",
+    text: "IP/copyright loss||Misuse or abuse of an individual or organisation’s intellectual property, including copyright, trademarks, and patents.",
+  },
+  // combined these two from the taxonomy
+  {
+    value: "Stereotyping/discrimination",
+    text: "Stereotyping/discrimination||Derogatory or otherwise harmful stereotyping or homogenisation of individuals, groups, societies or cultures due to the mis-representation, over-representation, under-representation, or non-representation of specific identities, groups, or perspectives or the unfair or inadequate treatment or the arbitrary distinction based on a person’s race, ethnicity, age, gender, sexual preference, religion, national origin, marital status, disability, language, or other protected groups.",
+  },
+  // should the definition be changed from original?
+  // added hallucinations to the title
+  {
+    value: "Information degradation/hallucinations",
+    text: "Information degradation/hallucinations||Creation or spread of false, hallucinatory, low-quality, misleading, or inaccurate information that degrades the information ecosystem and causes people to develop false or inaccurate perceptions, decisions and beliefs; or to lose trust in accurate information.",
+  },
+  /**
+   * Changed from:
+   * Loss of ability to take advantage of a financial or other opportunity, such as education, employability/securing a job.
+   * To:
+   * Loss of opportunities for an individual to benefit from financial or other opportunity, such as education, employability/securing a job.
+   */
+  {
+    value: "Opportunity loss",
+    text: "Opportunity loss||Loss of opportunities for an individual to benefit from financial or other opportunity, such as education, employability/securing a job",
+  },
+  // combined these two from taxonomy
+  {
+    value: "Bodily Injury/loss of life",
+    text: "Bodily Injury/loss of life||Physical pain, injury, illness, or disease suffered by an individual or group due to the malfunction, use or misuse of a technology system or the accidental or deliberate loss of life, including suicide, extinction or cessation, due to the use or misuse of a technology system.",
+  },
+  {
+    value: "Cultural dispossession",
+    text: "Cultural dispossession||Intentional and/or unintentional erasure of cultural goods and values, such as ways of speaking, expressing humour, or sounds and voices that contribute to a cultural identity, or their inappropriate re-use in other cultures.",
+  },
+  // changed definiton
+  {
+    value: "Dehumanisation/objectification",
+    text: "Dehumanisation/objectification||Use or misuse of a technology system to depict and/or treat people as not human, less than human, or as objects, or reinforce similar behaviors through interaction with the system",
+  },
+  // combined these two from taxonomy
+  {
+    value: "Harassment/abuse/intimidation/trauma",
+    text: "Harassment/abuse/intimidation/trauma||Online behaviour, including sexual harassment, that makes an individual or group feel alarmed or threatened or a severe and lasting emotional shock and pain caused by an extremely upsetting experience by the system.",
+  },
+  // {
+  //   values: "Sexualisation",
+  //   text: "Sexualisation||Sexual interest in a technology or application.",
+  // },
 ];
 
 // trust and distrust methods (sort of)
@@ -213,6 +353,8 @@ const surveyJson = {
           name: "useCaseCategoriesQuestion",
           title:
             "For each use case identified, select all of the categories that best describe it.",
+          description:
+            "To see definitions of categories, hover over the category for about half a second.",
           isRequired: true,
           columns: [
             {
@@ -298,7 +440,7 @@ const surveyJson = {
           name: "useCaseHarmsQuestion",
           title: "For each use case, identify possible harms you see.",
           description:
-            'A harm could be a possible risk or negative consequence related to that use of AI. For example, for "Help with math homework" a possible harm could be "Reducing critical thinking." Add one harm at a time using the "Add harm" button.',
+            'A harm could be a possible risk or negative consequence related to that use of AI. For example, for "Help with math homework" a possible harm could be "Reducing critical thinking." Add one harm at a time using the "Add harm" button. To see definitions of categories, hover over the category for about half a second.',
           templateElements: [
             {
               type: "text",
@@ -554,6 +696,7 @@ const surveyJson = {
       ],
     },
   ],
+  navigateToUrl: "https://google.com",
   showPageNumbers: true,
   showProgressBar: true,
   progressBarLocation: "aboveheader",
@@ -564,6 +707,34 @@ const surveyJson = {
 };
 
 const survey = new Survey.Model(surveyJson);
+
+// https://surveyjs.io/form-library/examples/change-survey-html-with-javascript/reactjs#content-code
+// changed to make work with dynamic content like dropdown
+// https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#onPopupVisibleChanged
+const titleDivider = "||";
+
+function updateStringComponents(_, options) {
+  // do nothing if it is not open
+  if (!options.visible) {
+    return;
+  }
+
+  // options.htmlElement threw an error so switched to whole document and it worked
+  // added sv-popup cause it is in the html for the dropdown inspected
+  setTimeout(() => {
+    document.querySelectorAll(".sv-popup .sv-string-viewer").forEach((el) => {
+      const text = el.innerText;
+      if (text.indexOf(titleDivider) > -1) {
+        const strings = text.split(titleDivider);
+        el.title = strings[1];
+        el.innerText = strings[0];
+      }
+    });
+  }, 50);
+}
+// changed from onAfterRenderQuestion to onPopupVisibleChanged
+// made sense for this use case based on the documentation linked above
+survey.onPopupVisibleChanged.add(updateStringComponents);
 
 survey.applyTheme(SurveyTheme.LayeredLightPanelless);
 
