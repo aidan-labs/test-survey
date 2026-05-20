@@ -388,7 +388,7 @@ const surveyJson = {
           name: "useCaseHarmsQuestion",
           title: "For each use case, identify possible harms you see.",
           description:
-            'A harm could be a possible risk or negative consequence related to that use of AI. For example, for "Help with math homework" a possible harm could be "Reducing critical thinking." Add one harm at a time using the "Add harm" button. To see definitions of categories, hover over the category for about half a second.',
+            'A harm could be a possible risk or negative consequence related to that use of AI. For example, for "Help with math homework" a possible harm could be "Reducing critical thinking." Add one harm at a time using the "Add another harm" button. To see definitions of categories, hover over the category for about half a second.',
           templateElements: [
             {
               type: "text",
